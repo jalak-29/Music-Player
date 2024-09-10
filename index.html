@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Music Player</title>
+    <link rel="stylesheet" href="styleofmp.css">
+    <!--<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">-->`
+</head>
+<body>
+    <strong class="dbox"> Instruction:- <br> Click (▶) to open the music player ♫</strong>
+    <details class="over">
+        <summary>
+            <h3><strong></strong><ruby>Music ▶ player<rt>Jalak</rt></ruby></strong></h3>
+        </summary>
+        <center>
+        <div class="overall">
+            <br>
+            <h3><ruby>Music player <rt>Jalak</rt></ruby></h3>
+            <img  id="track_img">
+            <p id="title">title.mp3</p>
+            <p id="artist">artist name</p>
+            <input id="duration_slider" type="range" min="0" max="100"  onclick="change_d()" >
+            <br> 
+            <button onclick="prev_song()" id="pre"><<</button>
+            <button class="b" onclick="play_pause()" id="play">▶</button>
+            <button onclick="next_song()" id="next">>></button>
+        </div>
+        </center>
+    </details>
+
+    <script>
+        var prev=document.querySelector('#pre');
+        var playy=document.querySelector('#play');
+        var next=document.querySelector('#next');
+
+        let title=document.querySelector('#title');
+        let artist=document.querySelector('#artist');
+        let slider=document.querySelector('#duration_slider');
+        let track_image=document.querySelector('#track_img');
+
+        var timer;
+        var index=0;
+        var playing=false;
+
+        let trackk=document.createElement('audio');
+
+        let allsongs=[
+            {
+                name:'Adada adada song',
+                path:'songs/Adada Adada.mp3',
+                img_path:'img/adada.jpg',
+                arti:'~ Santhosh Subramaniam'
+            },
+            {
+                name:'Aathadi aathadi song',
+                path:'songs/Aathadi-Aathadi.mp3',
+                img_path:'img/aathadi.jpeg',
+                arti:'~ Anegan'
+            },
+            {
+                name:'Idhayathai yedho ondru song',
+                path:'songs/Idhayathai-Yedho-Ondru.mp3',
+                img_path:'img/idhayathai.jpg',
+                arti:'~ Yennai Arindhaal'
+            },
+            {
+                name:'Mudhal mazhai song',
+                path:'songs/Mudhal-Mazhai.mp3',
+                img_path:'img/mudhal.jpeg',
+                arti:'~ Bheema'
+            },
+            {
+                name:'Sirugugal vandhadhu song',
+                path:'songs/Siragugal.mp3',
+                img_path:'img/siragugal.jpeg',
+                arti:'~ Sarvam'
+            },
+            {
+                name:'Kangal edho song',
+                path:'songs/Kangal-Edho-MassTamilan.dev.mp3',
+                img_path:'img/kangal edho.jpeg',
+                arti: '~ Chitta'
+            },
+            {
+                name: 'Lesa lesa song',
+                path: 'songs/Lesa-Lesa.mp3',
+                img_path: 'img/lesalesa.jpeg',
+                arti: '~ Lesa Lesa'
+            },
+            {
+                name: 'Poraney song',
+                path: 'songs/Poraney-Poraney.mp3',
+                img_path: 'img/poraneyporaney.jpeg',
+                arti: '~ Vaagai Sudava'
+            },
+            {
+                name: 'Nakka mukka song',
+                path: 'songs/Naakka Mukka.mp3',
+                img_path: 'img/nakkamukka.jpeg',
+                arti: '~ Kaadhalil Vilundhen'
+            },
+            {
+                name: 'Kannana kanne song',
+                path: 'songs/Kannana-Kanne.mp3',
+                img_path:'img/kannanakaney.jpeg',
+                arti: '~ Naanum Rowdy Dhan'
+            }
+        ];
+
+        function load_track(index)
+        {
+            clearInterval(timer);
+            reset_slider();
+
+            trackk.src = allsongs[index].path;
+            track_image.src = allsongs[index].img_path;
+            title.innerHTML = allsongs[index].name;
+            artist.innerHTML = allsongs[index].arti;
+            
+            timer = setInterval(range_slider,1000);
+            total.innerHTML=allsongs.length;
+            present.innerHTML=index+1;
+        }
+        load_track(index);
+
+        function  play_pause(){
+            if(playing==false){
+                playSong();
+            }
+            else{
+                pauseSong();
+            }
+        }
+        
+        function reset_slider(){
+            slider.value=0 ;
+        }
+
+        function playSong(){
+            trackk.play();
+            playing=true;
+            playy.innerHTML='| |';
+        }
+
+        function pauseSong(){
+            trackk.pause();
+            playing=false;    
+            playy.innerHTML='▶';
+        }
+
+        function next_song(){
+            if(index<((allsongs.length)-1)){
+                index++;
+            }
+            else{
+                index=0;
+            }
+            load_track(index);
+            pauseSong();
+        }
+
+        function prev_song(){
+            if(index>0){
+                index--;
+            }
+            else{
+                index=(allsongs.length-1);
+                }
+            load_track(index);
+            pauseSong();
+        }
+
+        function change_d(){
+            slider_position = trackk.duration * (slider.value/100);
+            trackk.currentTime = slider_position;
+        }
+
+        setTimeout(()=>{
+            let prog=document.getElementById("duration_slider");
+            let bar=1;
+            let t=setInterval(range_slider,10);
+            function range_slider(){
+                if(bar>=100){
+                    clearInterval(timer);
+                }
+                else{
+                    bar++;
+                    prog.style.width=bar+"%";
+                }
+                //return trackk.currentTime;
+            }
+        },1000);
+
+    </script>
+</body>
+</html>
